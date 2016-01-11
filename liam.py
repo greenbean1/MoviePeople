@@ -6,13 +6,12 @@ LIAM_NEESON_WIKIPEDIA_URL = 'https://en.wikipedia.org/wiki/Liam_Neeson'
 
 
 def main():
-    html_soup = get_html_soup(LIAM_NEESON_WIKIPEDIA_URL)
+    name = get_input_name()
+    wiki_url = name_to_url(name)
+    #html_soup = get_html_soup(LIAM_NEESON_WIKIPEDIA_URL)
+    html_soup = get_html_soup(wiki_url)
     full_name = get_full_name(html_soup)
-    #write_html(html_soup, output_file_name='pretty_liam.txt')
-    print(print_roles(html_soup))
-    #liam_neeson_is_an_actor = is_an_actor(html_soup)
-    #print('Is Liam Neeson an actor?!?! ' +
-    #      'YES!' if liam_neeson_is_an_actor else 'no...')
+    print_roles(html_soup)
 
 #Takes URL and returns a BeautifulSoup object
 def get_html_soup(url):
@@ -41,6 +40,9 @@ def is_an_actor(soup):
         return True
     else:
         return False
+    #liam_neeson_is_an_actor = is_an_actor(html_soup)
+    #print('Is Liam Neeson an actor?!?! ' +
+    #      'YES!' if liam_neeson_is_an_actor else 'no...')
         
 def is_a_director(soup):
     text = get_first_p_tag_text(soup)
@@ -76,6 +78,21 @@ def get_full_name(soup):
     print(soup.b.string)
     return soup.b.string
 
+def get_input_name():
+    name = input('Please enter your first and last name separated with a space: ')
+    return name
+
+#first and last name separated with a space
+def name_to_url(name):
+    name = name.replace(' ',"_")
+    url = 'https://en.wikipedia.org/wiki/'
+    url = url + name
+    return url
+
 if __name__ == '__main__':
     main()
+
+
+
+
 
