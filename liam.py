@@ -1,14 +1,14 @@
 from bs4 import BeautifulSoup
 import urllib.request
+import re
 
 
 LIAM_NEESON_WIKIPEDIA_URL = 'https://en.wikipedia.org/wiki/Liam_Neeson'
 
 
 def main():
-    name = get_input_name()
+    name = get_input_name().lower()
     wiki_url = name_to_url(name)
-    #html_soup = get_html_soup(LIAM_NEESON_WIKIPEDIA_URL)
     html_soup = get_html_soup(wiki_url)
     full_name = get_full_name(html_soup)
     print_roles(html_soup)
@@ -34,26 +34,46 @@ def get_first_p_tag_text(soup):
     first_p_tag = get_first_p_tag(soup)
     return first_p_tag.get_text().lower()
     
+#Fix via regex to include cases when actor/actress is at end of sentence or in a list (.,) Mel Gibson & John Williams
 def is_an_actor(soup):
     text = get_first_p_tag_text(soup)
-    if('actor' in text or 'actress' in text):
+    match = re.search(r' actor[,\.]', text) #[\,\.]
+    if match:
+        print('actor')
         return True
     else:
+        print('noactor')
         return False
-    #liam_neeson_is_an_actor = is_an_actor(html_soup)
-    #print('Is Liam Neeson an actor?!?! ' +
-    #      'YES!' if liam_neeson_is_an_actor else 'no...')
-        
+    check1 = re.compile(' actor[,.]')
+    x = re.search(re.compile(r' actor[,.]'), ' actor.')
+    print(x)
+    x = re.search(re.compile(r' actor[,.]'), text)
+    print(x)
+    #y = check1.search(' actor. hi s')
+    val = re.match(check1, text)
+    if(val):
+        print(val.group())
+    #x.group(0)
+    print('hi')
+    check2 = ' actress '
+    #if(check1 in text or check2 in text):
+    #    return True
+    #else:
+    #    return False
+
 def is_a_director(soup):
     text = get_first_p_tag_text(soup)
-    if('director' in text or 'filmmaker' in text):
+    check1 = ' director '
+    check2 = ' filmmaker '
+    if(check1 in text or check2 in text):
         return True
     else:
         return False
         
 def is_a_composer(soup):
     text = get_first_p_tag_text(soup)
-    if('composer' in text):
+    check1 = ' composer'
+    if(check1 in text):
         return True
     else:
         return False
@@ -61,10 +81,9 @@ def is_a_composer(soup):
 #improve to include director/composer, a/an, male/female
 def print_roles(soup):
     name = get_person(soup)
-    if(is_an_actor(soup)):
-        print(name + ' is an actor.')
-    else:
-        print(name + ' is not an actor.')
+    print('Actor: ' + str(is_an_actor(soup)))
+    print('Director: ' + str(is_a_director(soup)))
+    print('Composer: ' + str(is_a_composer(soup)))
 
 def get_person(soup):
     title_string = soup.title.string
@@ -73,20 +92,23 @@ def get_person(soup):
     print(person)
     return person
     
-#Needs improvement with edge cases like quotes in bold tags (Babe Ruth)   
+#Fix edge cases like quotes in bold tags (Babe Ruth) 
+#Fix edge cases side panel w/bold (Barack Obama)
 def get_full_name(soup):
     print(soup.b.string)
     return soup.b.string
 
 def get_input_name():
-    name = input('Please enter your first and last name separated with a space: ')
+    name = input('Please enter a name (first and last name separated with a space): ')
     return name
 
-#first and last name separated with a space
 def name_to_url(name):
-    name = name.replace(' ',"_")
+    spaceIndex = name.index(' ')
+    name = name[0].upper() + name[1:spaceIndex] + '_' + name[spaceIndex+1].upper() + name[spaceIndex+2:]
+    print(name)
     url = 'https://en.wikipedia.org/wiki/'
     url = url + name
+    print(url)
     return url
 
 if __name__ == '__main__':
