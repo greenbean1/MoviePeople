@@ -50,8 +50,10 @@ def get_person(soup):
     print(person)
     return person
 
+#Not currently used
 #Fix edge cases like quotes in bold tags (Babe Ruth) 
 #Fix edge cases side panel w/bold (Barack Obama)
+#Fix edge cases where full name has quotes (Brad Pitt)
 def get_full_name(soup):
     print(soup.b.string)
     return soup.b.string
