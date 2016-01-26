@@ -3,6 +3,7 @@
 
 def get_input_name():
     name = input('Please enter a name (first and last name separated with a space): ')
+    print('You entered: ' + name)
     return name
 
 def name_to_url(name):
@@ -13,3 +14,19 @@ def name_to_url(name):
     url = url + name
     print(url)
     return url
+    
+def to_wiki_url(slug):
+    url = 'https://en.wikipedia.org/wiki/'
+    url = url + slug
+    #print('Wikipedia URL: ' + url)
+    return url
+    
+def has_href(tag):
+    return tag.has_attr('href')
+    
+def has_title(tag):
+    return tag.has_attr('title')
+    
+def has_percentage_sign(text):
+    return '%' in text
+    

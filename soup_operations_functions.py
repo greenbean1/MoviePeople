@@ -9,11 +9,7 @@ def get_html_soup(url):
         html = response.read()
     soup = BeautifulSoup(html, 'html.parser')
     return soup
-
-def write_html(soup, output_file_name):
-    pretty_html = soup.prettify()
-    with open(output_file_name, 'w+') as file:
-        file.write(pretty_html)
+    
 
 #improve to include director/composer, a/an, male/female
 def print_roles(soup):
@@ -21,3 +17,14 @@ def print_roles(soup):
     print('Actor: ' + str(soup_info_functions.is_an_actor(soup)))
     print('Director: ' + str(soup_info_functions.is_a_director(soup)))
     print('Composer: ' + str(soup_info_functions.is_a_composer(soup)))
+    
+def write_html(soup, output_file_name):
+    pretty_html = soup.prettify()
+    with open(output_file_name, 'w+') as file:
+        file.write(pretty_html)
+        
+def write_a_tags(soup, output_file_name):
+    with open(output_file_name, 'w+') as file:
+        links = soup.find_all('a')
+        for link in links:
+            file.write(str(link) + '\n')
