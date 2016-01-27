@@ -5,6 +5,11 @@ import re
 def get_first_p_tag(soup):
     return soup.p
 
+def get_first_bold_element_text(soup):
+    first_p_tag = get_first_p_tag(soup)
+    #print(soup.p.b)
+    return soup.p.b
+    #return first_p_tag.b.get_text().lower()
 
 def get_first_p_tag_text(soup):
     first_p_tag = get_first_p_tag(soup)
@@ -12,35 +17,37 @@ def get_first_p_tag_text(soup):
         return ''
     return first_p_tag.get_text().lower()
 
-
 def is_an_actor(soup):
-    text = get_first_p_tag_text(soup)
+    first_p_tag_text = get_first_p_tag_text(soup)
+    #first_bold_tag = get_first_bold_element_text(soup)
     actor_words = 'actor', 'actress'
     for actor_word in actor_words:
         actor_regex = r'\b{actor}\b'.format(actor=actor_word)
-        match = re.search(actor_regex, text)
-        if match:
+        #award_match = re.search(actor_regex, str(first_bold_tag))
+        #if award_match:
+        #    return False
+        actor_match = re.search(actor_regex, first_p_tag_text)
+        if actor_match:
             return True
     return False
 
-
 def is_a_director(soup):
-    text = get_first_p_tag_text(soup)
+    first_p_tag_text = get_first_p_tag_text(soup)
     director_words = 'director', 'filmmaker'
     for director_word in director_words:
         director_regex = r'\b{director}\b'.format(director=director_word)
-        match = re.search(director_regex, text)
+        match = re.search(director_regex, first_p_tag_text)
         if match:
             return True
     return False
 
 
 def is_a_composer(soup):
-    text = get_first_p_tag_text(soup)
+    first_p_tag_text = get_first_p_tag_text(soup)
     composer_words = 'composer',
     for composer_word in composer_words:
         composer_regex = r'\b{composer}\b'.format(composer=composer_word)
-        match = re.search(composer_regex, text)
+        match = re.search(composer_regex, first_p_tag_text)
         if(match):
             return True
     return False

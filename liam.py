@@ -17,6 +17,10 @@ def main():
         error_message = ('No BeautifulSoup object likely due to invalid person and/or URL: {url}'
                          .format(url=wiki_url))
         raise Exception(error_message)
+    #first_p = soup_info_functions.get_first_p_tag(html_soup)
+    #print(first_p.b)
+    #return
+    
     soup_operations_functions.print_roles(html_soup)
     #soup_operations_functions.write_a_tags(html_soup,'testliam.txt')
     related_actors = actor_relationships.get_related_actors(html_soup)

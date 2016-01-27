@@ -1,5 +1,6 @@
+import re
 #Basic string or stringish functions
-#No dependencies
+
 
 def get_input_name():
     name = input('Please enter a name (first and last name separated with a space): ')
@@ -30,3 +31,18 @@ def has_title(tag):
 def has_percentage_sign(text):
     return '%' in text
     
+def has_best_actor(text):
+    best_actor_regex = r'.*[b|B]est.*[a|A]ct(or|ress).*'
+    match = re.search(best_actor_regex, text)
+    return match
+        
+        
+def is_a_director(soup):
+    first_p_tag_text = get_first_p_tag_text(soup)
+    director_words = 'director', 'filmmaker'
+    for director_word in director_words:
+        director_regex = r'\b{director}\b'.format(director=director_word)
+        match = re.search(director_regex, first_p_tag_text)
+        if match:
+            return True
+    return False
