@@ -8,6 +8,8 @@ def get_first_p_tag(soup):
 
 def get_first_p_tag_text(soup):
     first_p_tag = get_first_p_tag(soup)
+    if first_p_tag is None:
+        return ''
     return first_p_tag.get_text().lower()
 
 
@@ -47,7 +49,7 @@ def get_person(soup):
     title_string = soup.title.string
     endIndex = title_string.index(' - Wikipedia')
     person = title_string[:endIndex]
-    print(person)
+    #print(person)
     return person
 
 #Not currently used
