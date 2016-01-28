@@ -3,12 +3,14 @@ from urllib.error import HTTPError
 import string_functions
 import soup_info_functions
 import soup_operations_functions
-
+import re
 
 def get_related_actors(soup):
     related_actors = {}
     links = soup.find_all('a')
     for link in links:
+        if link_after_all_actors(link, soup):
+            break
         if not link_has_good_href(link):
             continue
         actor_slug = get_actor_slug(link)
@@ -26,6 +28,14 @@ def get_related_actors(soup):
             related_actors[actor_name] = actor_url
             print(actor_name)
     return related_actors
+
+def link_after_all_actors(link, soup):
+    filmography_regex = r'.*ilmography.*'
+    filmography_tag = link.find_next("span",id = re.compile(filmography_regex)) #could add class="mw-headline" restriction
+    if filmography_tag is None:
+        return True
+    else:
+        return False
 
 
 def link_has_good_href(link):
